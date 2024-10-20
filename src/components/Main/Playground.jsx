@@ -19,9 +19,9 @@ const Playground = () => {
         <p>Gemini</p>
         <img className="w-9 rounded-[50%]" src={assets.user_icon} alt="" />
       </div>
-      <div className="main-container max-w-4xl m-auto max-md:max-h-[66vh]  h-custom-h w-full overflow-y-scroll no-scrollbar flex items-center justify-center ">
+      <div className="main-container max-w-4xl m-auto max-md:max-h-[66vh]  overflow-y-scroll no-scrollbar  ">
         {!showResult ? (
-          <>
+          <div className="flex items-center justify-center h-custom-h w-full">
             <div className="greet my-[50px] mx-0 text-[32px] text-zinc-300 font-medium p-5">
               <p>
                 <span className="bg-gemini-gradient bg-clip-text text-transparent bg-[length:400%_100%]">
@@ -76,7 +76,7 @@ const Playground = () => {
                 />
               </div>
             </div> */}
-          </>
+          </div>
         ) : (
           <div className="result py-0 px-[5%]  overflow-y-scroll no-scrollbar">
             <div className="result-title my-10 mx-0 flex items-center gap-5">
