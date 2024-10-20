@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { assets } from "../../assets/assets";
 import { Context } from "../../context/Context";
 
@@ -12,6 +12,24 @@ const Playground = () => {
     setInput,
     input,
   } = useContext(Context);
+
+  const imgRef = useRef(null); // Reference to the image element
+  const inputRef = useRef(null); // Reference to the input element
+
+  useEffect(() => {
+    // Focus the input when it changes
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [input]); // Focus when input changes
+
+  const handleKeyDown = (event) => {
+    // Check if the Enter key is pressed
+    if (event.key === "Enter") {
+      event.preventDefault(); // Prevent the default behavior (like form submission)
+      onSent();
+    }
+  };
 
   return (
     <div className="main flex-1 min-h-screen pb-2.5 relative">
@@ -107,11 +125,13 @@ const Playground = () => {
         <div className=" main-bottom absolute bottom-0 w-[100%] max-w-[900px] py-0 px-5 m-auto">
           <div className="max-md:py-2 max-md:px-3 search-box flex items-center justify-between gap-5 bg-[#F0F4F9] py-3 px-5 rounded-[50px]">
             <input
+              ref={inputRef} // Attach the ref to the input
               onChange={(e) => setInput(e.target.value)}
               value={input}
               className="max-md:flex-none max-md:max-w-[190px]  flex-1 bg-transparent border-none outline-none p-2 text-base placeholder:text-zinc-700 placeholder:font-normal "
               type="text"
               placeholder="Ask Gemini"
+              onKeyDown={handleKeyDown} // Handle Enter key press
             />
             <div className="max-md:gap-1 flex items-center gap-4">
               <img
@@ -124,16 +144,24 @@ const Playground = () => {
                 src={assets.mic_icon}
                 alt=""
               />
-              {input ? <img
-                onClick={() => onSent()}
-                className="max-md:w-5 w-6 cursor-pointer"
-                src={assets.send_icon}
-                alt=""
-              />:null}
+              {input ? (
+                <img
+                  ref={imgRef} // Attach the ref to the img
+                  onClick={() => {
+                    onSent(input); // Send input value on click
+                    setInput(""); // Clear the input after sending
+                  }}
+                  className="max-md:w-5 w-6 cursor-pointer"
+                  src={assets.send_icon}
+                  alt="Send"
+                  tabIndex="0" // Make the image focusable
+                  role="button" // Optional: for accessibility
+                />
+              ) : null}
             </div>
           </div>
           <p className="botton-info text-xs my-4 mx-auto text-center font-light ">
-          Gemini can make mistakes, so double-check it
+            Gemini can make mistakes, so double-check it
           </p>
         </div>
       </div>
